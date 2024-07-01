@@ -34,11 +34,27 @@ general_df.fillna({'gender': 'f'}, inplace=True)
 # Fill NaN values in specified columns with 0
 general_df.fillna({'bmi': 0, 'diagnosis': 0, 'blood_test': 0, 'ecg': 0, 'ultrasound': 0, 'mri': 0, 'xray': 0, 'children': 0, 'months': 0}, inplace=True)
 
-# Print the shape of the resulting DataFrame
-print(general_df.shape)
+#Which hospital has the highest number of patients?
+print(f"The answer to the 1st question is {general_df.hospital.value_counts().idxmax()}")
+
+#What share of the patients in the general hospital suffers from stomach-related issues?
+# Round the result to the third decimal place.
+print(f"The answer to the 2nd question is {round((general_df.loc[(general_df['hospital'] == 'general') & (general_df['diagnosis'] == 'stomach')].shape[0] / general_df.loc[general_df['hospital'] == 'general'].shape[0]), 3)}")
+
+#What share of the patients in the sports hospital suffers from dislocation-related issues?
+# Round the result to the third decimal place.
+print(f"The answer to the 3rd question is {round((general_df.loc[(general_df['hospital'] == 'sports') & (general_df['diagnosis'] == 'dislocation')].shape[0] / general_df.loc[general_df['hospital'] == 'sports'].shape[0]), 3)}")
+
+#What is the difference in the median ages of the patients in the general and sports hospitals?
+print(f"The answer to the 4th question is {general_df[general_df['hospital'] == 'general'].age.median() - general_df[general_df['hospital'] == 'sports'].age.median()} ")
+
+#After data processing at the previous stages, the blood_test column has three values: t = a blood test was taken,
+# f = a blood test wasn't taken, and 0 = there is no information.
+# In which hospital the blood test was taken the most often (there is the biggest number of t in the
+# blood_test column among all the hospitals)? How many blood tests were taken?
+print(f"The answer to the 5th question is {general_df[general_df['blood_test'] == 't'].groupby('hospital')['blood_test'].count().idxmax()}, {general_df[general_df['blood_test'] == 't'].groupby('hospital')['blood_test'].value_counts().max()} blood tests")
 
 # Sample 20 rows from the DataFrame with a fixed random state for reproducibility
 general_df = general_df.sample(n=20, random_state=30)
 
 # Print the first 20 rows of the sampled DataFrame
-print(general_df.head(20))
