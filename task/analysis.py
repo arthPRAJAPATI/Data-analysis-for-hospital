@@ -63,10 +63,31 @@ plt.show()
 common_age = values.argmax()
 print(f"The answer to the 1st question: {bins[common_age]}-{bins[common_age + 1]}")
 
+#What is the most common diagnosis among patients in all hospitals?
+diagnosis = general_df['diagnosis'].value_counts()
+plt.pie(diagnosis, labels=diagnosis.index.tolist(), autopct='%1.1f%%')
+plt.show()
+common_diagnosis = diagnosis.index.tolist()[0]
+print(f"The answer to the 2nd question: {common_diagnosis}")
+
+# Build a violin plot of height distribution by hospitals.
+# What is the main reason for the gap in values? Why there are two peaks,
+# which correspond to the relatively small and big values?
+height_general = general_df.loc[general_df['hospital'] == 'general', 'height']
+height_sports = general_df.loc[general_df['hospital'] == 'sports', 'height']
+height_prenatal = general_df.loc[general_df['hospital'] == 'prenatal', 'height']
+height = [height_general, height_sports, height_prenatal]
+fig, axes = plt.subplots()
+axes.set_xticks((1, 2, 3))
+axes.set_xticklabels(("General","Sports", "Prenatal"))
+axes.set_ylabel("Height")
+plt.violinplot(height)
+plt.show()
+print(f"The answer to the 3rd question: difference in because the sports hospital will mostly have adult patients")
 
 # Sample 20 rows from the DataFrame with a fixed random state for reproducibility
 general_df = general_df.sample(n=20, random_state=30)
 
 # Print the first 20 rows of the sampled DataFrame
-#pd.set_option('display.max_columns', None)
-#print(general_df.head(20))
+# pd.set_option('display.max_columns', None)
+# print(general_df.head(20))
